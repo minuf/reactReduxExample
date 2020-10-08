@@ -5,13 +5,15 @@ import { registration } from './registration.reducer';
 import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { clients } from './client.reducer';
+import { products } from './product.reducer';
 
 const rootReducer = combineReducers({
     authentication,
     registration,
     users,
     alert,
-    clients
+    clients,
+    products
 });
 
 export default rootReducer;
