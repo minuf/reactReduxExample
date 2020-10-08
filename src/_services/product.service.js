@@ -56,7 +56,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/posts/${id}`, requestOptions).then(handleResponse);
+    return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

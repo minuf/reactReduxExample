@@ -1,4 +1,5 @@
 import { authHeader } from '../_helpers';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 export const clientService = {
     create,
@@ -8,10 +9,25 @@ export const clientService = {
     delete: _delete
 };
 
-
-
-
 function getAll() {
+    const client = new ApolloClient({
+        uri: 'https://graphqlzero.almansi.me/api',
+        cache: new InMemoryCache()
+      });
+
+     client.query({ query: gql`
+        {
+            user(id: 1) {
+                posts {
+                  data {
+                    id
+                    title
+                  }
+                }
+              }
+        }`
+        })
+    .then(result => console.log(result.data.user.posts));
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
@@ -56,22 +72,22 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`https://jsonplaceholder.typicode.com/users/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                // logout();
-                window.location.reload(true);
-            }
+        // if (!response.ok) {
+        //     if (response.status === 401) {
+        //         // auto logout if 401 response returned from api
+        //         // logout();
+        //         window.location.reload(true);
+        //     }
 
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
+        //     const error = (data && data.message) || response.statusText;
+        //     return Promise.reject(error);
+        // }
 
         return data;
     });

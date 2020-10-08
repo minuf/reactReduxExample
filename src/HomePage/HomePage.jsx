@@ -32,7 +32,7 @@ function HomePage() {
     function clientsComponent(clients) {
         return(
             <div className="col-lg-8 offset-lg-2">
-            <h3>All registered clients:</h3>
+            <h3>All clients:</h3>
             
             {clients.loading && <em>Loading clients...</em>}
             {clients.error && <span className="text-danger">ERROR: {clients.error}</span>}
@@ -60,7 +60,7 @@ function HomePage() {
     function productsComponent(product) {
         return(
             <div className="col-lg-8 offset-lg-2">
-            <h3>All registered products:</h3>
+            <h3>All products:</h3>
             
             {product.loading && <em>Loading products...</em>}
             {product.error && <span className="text-danger">ERROR: {clients.error}</span>}
