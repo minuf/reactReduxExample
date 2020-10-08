@@ -1,36 +1,15 @@
 import { authHeader } from '../_helpers';
 
-export const userService = {
-    login,
-    logout,
-    register,
+export const clientService = {
+    create,
     getAll,
     getById,
     update,
     delete: _delete
 };
 
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
 
-    return fetch(`localhost:3000/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
 
-            return user;
-        });
-}
-
-function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('user');
-}
 
 function getAll() {
     const requestOptions = {
@@ -38,7 +17,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users`, requestOptions).then(handleResponse);
+    return fetch(`https://jsonplaceholder.typicode.com/users`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -47,27 +26,27 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`https://jsonplaceholder.typicode.com/users/${id}`, requestOptions).then(handleResponse);
 }
 
-function register(user) {
+function create(client) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(client)
     };
 
-    return fetch(`http://localhost:3000/users/register`, requestOptions).then(handleResponse);
+    return fetch(`https://jsonplaceholder.typicode.com/users`, requestOptions).then(handleResponse);
 }
 
-function update(user) {
+function update(client) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(client)
     };
 
-    return fetch(`localhost:3000/users/${user.id}`, requestOptions).then(handleResponse);;
+    return fetch(`https://jsonplaceholder.typicode.com/users/${client.id}`, requestOptions).then(handleResponse);;
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -86,7 +65,7 @@ function handleResponse(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
-                logout();
+                // logout();
                 window.location.reload(true);
             }
 

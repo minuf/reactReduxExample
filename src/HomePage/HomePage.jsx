@@ -2,37 +2,37 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { userActions } from '../_actions';
+import { clientActions } from '../_actions';
 
 function HomePage() {
-    const users = useSelector(state => state.users);
+    const clients = useSelector(state => state.clients);
     const user = useSelector(state => state.authentication.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(userActions.getAll());
+        dispatch(clientActions.getAll());
     }, [dispatch]);
 
-    function handleDeleteUser(id) {
-        dispatch(userActions.delete(id));
+    function handleDeleteClient(id) {
+        dispatch(clientActions.delete(id));
     }
 
     return (
         <div className="col-lg-8 offset-lg-2">
             <h1>Hi {user.firstName}!</h1>
             <p>You're logged in with React Hooks!!</p>
-            <h3>All registered users:</h3>
-            {users.loading && <em>Loading users...</em>}
-            {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-            {users.items &&
+            <h3>All registered clients:</h3>
+            {clients.loading && <em>Loading clients...</em>}
+            {clients.error && <span className="text-danger">ERROR: {clients.error}</span>}
+            {clients.items &&
                 <ul>
-                    {users.items.map((user, index) =>
-                        <li key={user.id}>
-                            {user.firstName + ' ' + user.lastName}
+                    {clients.items.map((client, index) =>
+                        <li key={client.id}>
+                            {client.name}
                             {
-                                user.deleting ? <em> - Deleting...</em>
-                                : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                : <span> - <button onClick={() => handleDeleteUser(user.id)} className="text-primary">Delete</button></span>
+                                client.deleting ? <em> - Deleting...</em>
+                                : client.deleteError ? <span className="text-danger"> - ERROR: {client.deleteError}</span>
+                                : <span> - <button onClick={() => handleDeleteClient(client.id)} className="text-primary">Delete</button></span>
                             }
                         </li>
                     )}
