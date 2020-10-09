@@ -57,7 +57,6 @@ function update(product) {
 }
 
 function getAll() {
-    console.log('hello');
     return dispatch => {
         dispatch(request());
 
