@@ -53,6 +53,7 @@ function HomePage() {
             <p>
                 <Link to="/login">Logout</Link>
             </p>
+                <span>Fetched from jsonPlaceHolder in json format</span>
         </div>
         );
     }
@@ -81,6 +82,8 @@ function HomePage() {
             <p>
                 <Link to="/login">Logout</Link>
             </p>
+            <span>Fetched from GraphQLZero in GraphQl format</span>
+
         </div>
         );
     }

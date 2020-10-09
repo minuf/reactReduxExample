@@ -1,5 +1,4 @@
 import { authHeader } from '../_helpers';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 export const clientService = {
     create,
@@ -10,24 +9,6 @@ export const clientService = {
 };
 
 function getAll() {
-    const client = new ApolloClient({
-        uri: 'https://graphqlzero.almansi.me/api',
-        cache: new InMemoryCache()
-      });
-
-     client.query({ query: gql`
-        {
-            user(id: 1) {
-                posts {
-                  data {
-                    id
-                    title
-                  }
-                }
-              }
-        }`
-        })
-    .then(result => console.log(result.data.user.posts));
     const requestOptions = {
         method: 'GET',
         headers: authHeader()

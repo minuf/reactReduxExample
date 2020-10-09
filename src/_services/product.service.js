@@ -1,4 +1,5 @@
 import { authHeader } from '../_helpers';
+import { ApolloClient, InMemoryCache, gql, useMutation } from '@apollo/client';
 
 export const productService = {
     create,
@@ -8,16 +9,28 @@ export const productService = {
     delete: _delete
 };
 
-
+const client = new ApolloClient({
+    uri: 'https://graphqlzero.almansi.me/api',
+    cache: new InMemoryCache()
+  });
 
 
 function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
 
-    return fetch(`https://jsonplaceholder.typicode.com/posts`, requestOptions).then(handleResponse);
+ return client.query({ query: gql`
+    {
+        posts(options: {paginate: {limit: 10}}) {
+            data {
+              id
+              title
+            }
+            meta {
+              totalCount
+            }
+          }
+    }`
+    })
+.then(result => result.data.posts.data);
 }
 
 function getById(id) {
@@ -51,12 +64,13 @@ function update(product) {
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
-    const requestOptions = {
-        method: 'DELETE',
-        headers: authHeader()
-    };
-
-    return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, requestOptions).then(handleResponse);
+    return client.mutate({mutation: gql `
+        mutation  {
+            deletePost(id: 1)
+          }
+    `})
+    
+.then(result => console.log("RESUUUUULLLLLTTTT: " + result));
 }
 
 function handleResponse(response) {
