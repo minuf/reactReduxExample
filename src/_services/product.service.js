@@ -29,7 +29,9 @@ function getAll() {
           }
     }`
     })
-.then(result => result.data.posts.data);
+.then(result => {
+  return JSON.parse(JSON.stringify(result.data.posts.data));;
+});
 }
 
 function create(product) {
@@ -46,17 +48,18 @@ function create(product) {
 .then(result => result);
 }
 
-function update(product) {
+function update(product, productTitle) {
+  console.log("TITLEEEE: " + productTitle)
     return client.mutate({mutation: gql `
     mutation {
-        updatePost(id: ${product.id}, input: {title: ${product.title}}) {
+        updatePost(id: ${product.id}, input: {title: "${productTitle}"}) {
           id
           title
         }
       }
     `})
     
-.then(result => result);
+.then(result => result.data.updatePost);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript

@@ -33,16 +33,14 @@ function create(client) {
     function failure(error) { return { type: clientConstants.CREATE_FAILURE, error } }
 }
 
-function update(client) {
+function update(client, clientName) {
     return dispatch => {
         dispatch(request(client));
 
-        clientService.update(client)
+        clientService.update(client, clientName)
             .then(
                 client => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
+                    dispatch(success(client));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -57,7 +55,6 @@ function update(client) {
 }
 
 function getAll() {
-    console.log('hello');
     return dispatch => {
         dispatch(request());
 

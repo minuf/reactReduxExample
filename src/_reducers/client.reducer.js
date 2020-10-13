@@ -14,6 +14,28 @@ export function clients(state = {}, action) {
             return {
                 error: action.error
             };
+        case clientConstants.UPDATE_REQUEST:
+            return {
+                ...state,
+                items: state.items.map(client =>
+                    client.id === action.client.id
+                        ? { ...client, updating: true }
+                        : client
+                )
+            };
+        case clientConstants.UPDATE_SUCCESS:
+            return {
+                ...state,
+                items: state.items.map(client =>
+                    client.id === action.client.id
+                        ? { ...client, name: action.client.name, updating: false }
+                        : client
+                )
+            };
+        case clientConstants.UPDATE_FAILURE:
+            return {
+                error: action.error
+            };
         case clientConstants.DELETE_REQUEST:
             // add 'deleting:true' property to user being deleted
             return {

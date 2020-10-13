@@ -14,6 +14,29 @@ export function products(state = {}, action) {
             return {
                 error: action.error
             };
+        case productConstants.UPDATE_REQUEST:
+            return {
+                ...state,
+                items: state.items.map(product =>
+                    product.id === action.product.id
+                        ? { ...product, updating: true }
+                        : product
+                )
+            };
+        case productConstants.UPDATE_SUCCESS:
+            console.log(action);
+            return {
+                ...state,
+                items: state.items.map(product =>
+                    product.id === action.product.id
+                        ? { ...product, title: action.product.title, updating: false }
+                        : product
+                )
+            };
+        case productConstants.UPDATE_FAILURE:
+            return {
+                error: action.error
+            };
         case productConstants.DELETE_REQUEST:
             // add 'deleting:true' property to user being deleted
             return {

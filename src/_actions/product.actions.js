@@ -33,16 +33,15 @@ function create(product) {
     function failure(error) { return { type: productConstants.CREATE_FAILURE, error } }
 }
 
-function update(product) {
+function update(product, productTitle) {
     return dispatch => {
         dispatch(request(product));
 
-        productService.update(product)
+        productService.update(product, productTitle)
             .then(
                 product => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
+                    // console.log(product);
+                    dispatch(success(product));
                 },
                 error => {
                     dispatch(failure(error.toString()));

@@ -17,8 +17,20 @@ function HomePage() {
         dispatch(productActions.getAll());
     }, [dispatch]);
 
+    function handleUpdateClient(client) {
+        var clientName = prompt("New Client name:", "Harry Potter");
+        // client.name = clientName;
+        dispatch(clientActions.update(client, clientName));
+    }
+
     function handleDeleteClient(id) {
         dispatch(clientActions.delete(id));
+    }
+
+    function handleUpdateProduct(product) {
+        var productTitle = prompt("New product name:", "Aspirador Conga")
+        console.log(productTitle);
+        dispatch(productActions.update(product, productTitle));
     }
 
     function handleDeleteProduct(id) {
@@ -43,8 +55,12 @@ function HomePage() {
                             {client.name}
                             {
                                 client.deleting ? <em> - Deleting...</em>
+                                : client.updating ? <em> - Updating...</em>
                                 : client.deleteError ? <span className="text-danger"> - ERROR: {client.deleteError}</span>
-                                : <span> - <button onClick={() => handleDeleteClient(client.id)} className="text-primary">Delete</button></span>
+                                : <span> - 
+                                    <button onClick={() => handleDeleteClient(client.id)} className="text-primary">Delete</button>
+                                    <button onClick={() => handleUpdateClient(client)} className="text-primary">Update</button>
+                                </span>
                             }
                         </li>
                     )}
@@ -72,8 +88,12 @@ function HomePage() {
                             {product.title}
                             {
                                 product.deleting ? <em> - Deleting...</em>
+                                : product.updating ? <em> - Updating...</em>
                                 : product.deleteError ? <span className="text-danger"> - ERROR: {product.deleteError}</span>
-                                : <span> - <button onClick={() => handleDeleteProduct(product.id)} className="text-primary">Delete</button></span>
+                                : <span> - 
+                                    <button onClick={() => handleDeleteProduct(product.id)} className="text-primary">Delete</button>
+                                    <button onClick={() => handleUpdateProduct(product)} className="text-primary">Update</button>
+                                </span>
                             }
                         </li>
                     )}

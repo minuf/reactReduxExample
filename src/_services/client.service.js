@@ -36,11 +36,11 @@ function create(client) {
     return fetch(`https://jsonplaceholder.typicode.com/users`, requestOptions).then(handleResponse);
 }
 
-function update(client) {
+function update(client, clientName) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(client)
+        body: `{"id": ${client.id}, "name": "${clientName}"}`
     };
 
     return fetch(`https://jsonplaceholder.typicode.com/users/${client.id}`, requestOptions).then(handleResponse);;
@@ -59,16 +59,17 @@ function _delete(id) {
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
-        // if (!response.ok) {
-        //     if (response.status === 401) {
-        //         // auto logout if 401 response returned from api
-        //         // logout();
-        //         window.location.reload(true);
-        //     }
+        console.log(data);
+        if (!response.ok) {
+            if (response.status === 401) {
+                // auto logout if 401 response returned from api
+                // logout();
+                window.location.reload(true);
+            }
 
-        //     const error = (data && data.message) || response.statusText;
-        //     return Promise.reject(error);
-        // }
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
 
         return data;
     });
