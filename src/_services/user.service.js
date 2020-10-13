@@ -17,7 +17,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`localhost:3000/users/authenticate`, requestOptions)
+    return fetch(`http://localhost:3000/users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -38,7 +38,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users`, requestOptions).then(handleResponse);
+    return fetch(`http://localhost:3000/users`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -47,7 +47,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`http://localhost:3000/users/${id}`, requestOptions).then(handleResponse);
 }
 
 function register(user) {
@@ -67,7 +67,7 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`localhost:3000/users/${user.id}`, requestOptions).then(handleResponse);;
+    return fetch(`http://localhost:3000/users/${user.id}`, requestOptions).then(handleResponse);;
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -77,7 +77,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`localhost:3000/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`http://localhost:3000/users/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
