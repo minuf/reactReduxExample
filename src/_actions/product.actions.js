@@ -10,16 +10,14 @@ export const productActions = {
     delete: _delete
 };
 
-function create(product) {
+function create(productTitle) {
     return dispatch => {
-        dispatch(request(product));
+        dispatch(request(productTitle));
 
-        productService.create(product)
+        productService.create(productTitle)
             .then(
                 product => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
+                    dispatch(success(product));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -28,7 +26,7 @@ function create(product) {
             );
     };
 
-    function request(product) { return { type: productConstants.CREATE_REQUEST, product } }
+    function request(productTitle) { return { type: productConstants.CREATE_REQUEST, productTitle } }
     function success(product) { return { type: productConstants.CREATE_SUCCESS, product } }
     function failure(error) { return { type: productConstants.CREATE_FAILURE, error } }
 }

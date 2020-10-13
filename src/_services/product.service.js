@@ -34,10 +34,10 @@ function getAll() {
 });
 }
 
-function create(product) {
+function create(productTitle) {
     return client.mutate({mutation: gql `
     mutation {
-        createPost(input: {title: ${product.title}, body: ${product.body}}) {
+        createPost(input: {title: "${productTitle}", body: ""}) {
           id
           title
           body
@@ -45,7 +45,7 @@ function create(product) {
       }
     `})
     
-.then(result => result);
+.then(result => result.data.createPost);
 }
 
 function update(product, productTitle) {
@@ -59,7 +59,13 @@ function update(product, productTitle) {
       }
     `})
     
-.then(result => result.data.updatePost);
+.then(result => {
+  if (result.status === 500) { // this is because in jsonplaceholder/products dont accept id that not exists (only has 100)
+    product.title = productTitle;
+    return product;
+  }
+  return result.data.updatePost
+  });
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript

@@ -1,7 +1,6 @@
 import { clientConstants } from '../_constants';
 import { clientService } from '../_services';
 import { alertActions } from './';
-import { history } from '../_helpers';
 
 export const clientActions = {
     create,
@@ -10,16 +9,15 @@ export const clientActions = {
     delete: _delete
 };
 
-function create(client) {
+function create(clientName) {
     return dispatch => {
-        dispatch(request(client));
+        dispatch(request(clientName));
 
-        clientService.create(client)
+        clientService.create(clientName)
             .then(
                 client => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
+                    dispatch(success(client));
+                    dispatch(alertActions.success('Created successful'));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -28,7 +26,7 @@ function create(client) {
             );
     };
 
-    function request(client) { return { type: clientConstants.CREATE_REQUEST, client } }
+    function request(clientName) { return { type: clientConstants.CREATE_REQUEST, clientName } }
     function success(client) { return { type: clientConstants.CREATE_SUCCESS, client } }
     function failure(error) { return { type: clientConstants.CREATE_FAILURE, error } }
 }

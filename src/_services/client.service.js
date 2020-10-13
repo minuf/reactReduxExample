@@ -26,11 +26,11 @@ function getById(id) {
     return fetch(`https://jsonplaceholder.typicode.com/users/${id}`, requestOptions).then(handleResponse);
 }
 
-function create(client) {
+function create(clientName) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(client)
+        body: `{"name": "${clientName}"}`
     };
 
     return fetch(`https://jsonplaceholder.typicode.com/users`, requestOptions).then(handleResponse);
@@ -43,7 +43,13 @@ function update(client, clientName) {
         body: `{"id": ${client.id}, "name": "${clientName}"}`
     };
 
-    return fetch(`https://jsonplaceholder.typicode.com/users/${client.id}`, requestOptions).then(handleResponse);;
+    return fetch(`https://jsonplaceholder.typicode.com/users/${client.id}`, requestOptions).then(response => {
+        if (response.status === 500) { // this is because in jsonplaceholder/users dont accept id that not exists (only has 10)
+            client.name = clientName;
+            return client;
+        }
+        handleResponse(response);
+    });;
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript

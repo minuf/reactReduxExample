@@ -8,11 +8,31 @@ export function products(state = {}, action) {
             };
         case productConstants.GETALL_SUCCESS:
             return {
-                items: action.products
+                items: action.products,
+                lastId: parseInt(action.products[action.products.length - 1].id)
             };
         case productConstants.GETALL_FAILURE:
             return {
                 error: action.error
+            };
+        case productConstants.CREATE_REQUEST:
+            return {
+                ...state,
+                creating: true
+            };
+        case productConstants.CREATE_SUCCESS:
+            action.product.id = '' + (state.lastId + 1) + ''
+            state.items.unshift(action.product)
+            return {
+                ...state,
+                lastId: state.lastId + 1,
+                creating: false
+            };
+        case productConstants.CREATE_FAILURE:
+            return {
+                ...state,
+                error: action.error,
+                creating: false
             };
         case productConstants.UPDATE_REQUEST:
             return {
